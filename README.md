@@ -8,7 +8,7 @@ It is a Nodejs express API and postgres as database.
 
 ## Running the API
 
-to run in production, copy the .env.example file to .env, and set the variables as needed.
+to run in production, copy the `.env.example` file to `.env`, and set the variables as needed.
 
 ```.env
 # .env.example

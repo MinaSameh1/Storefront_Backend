@@ -12,6 +12,7 @@
     "lint": "eslint src/*.ts",
     "migrate:up": "db-migrate up",
     "migrate:down": "db-migrate down",
+    "migrate:reset": "db-migrate reset",
     "fix": "eslint --fix src/*.ts",
     "format": "prettier --write 'src/**/*.ts'",
     "test": "cross-env LOG_LEVEL='silent' NODE_ENV='test' npm run build && jasmine",

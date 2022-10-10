@@ -12,8 +12,8 @@ to run in production, copy the `.env.example` file to `.env`, and set the variab
 
 ```.env
 # .env.example
-## Note: this will make it not output anything, I recommend `info` instead
-LOG_LEVEL=silent
+## Note: `silent` will make it not output anything
+LOG_LEVEL=info
 # Database vars
 PGHOST=localhost
 PGUSER=user

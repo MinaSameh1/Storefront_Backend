@@ -5,16 +5,16 @@
       "ENV": "PGHOST"
     },
     "user": {
-      "ENV": "PGUSER"
+      "ENV": "POSTGRES_USER"
     },
     "password": {
-      "ENV": "PGPASSWORD"
+      "ENV": "POSTGRES_PASSWORD"
     },
     "port": {
       "ENV": "PGPORT"
     },
     "database": {
-      "ENV": "PGDATABASE"
+      "ENV": "POSTGRES_DB"
     }
   },
   "dev": {
@@ -23,16 +23,16 @@
       "ENV": "PGHOST"
     },
     "user": {
-      "ENV": "PGUSER"
+      "ENV": "POSTGRES_USER"
     },
     "password": {
-      "ENV": "PGPASSWORD"
+      "ENV": "POSTGRES_PASSWORD"
     },
     "port": {
       "ENV": "PGPORT"
     },
     "database": {
-      "ENV": "PGDATABASE"
+      "ENV": "POSTGRES_DB"
     }
   },
   "test": {
@@ -41,16 +41,16 @@
       "ENV": "PGHOST"
     },
     "user": {
-      "ENV": "PGUSER"
+      "ENV": "POSTGRES_USER"
     },
     "password": {
-      "ENV": "PGPASSWORD"
+      "ENV": "POSTGRES_PASSWORD"
     },
     "port": {
       "ENV": "PGPORT"
     },
     "database": {
-      "ENV": "PGDATABASE"
+      "ENV": "POSTGRES_DB"
     }
   }
 }

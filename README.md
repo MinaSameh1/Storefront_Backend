@@ -16,10 +16,10 @@ to run in production, copy the `.env.example` file to `.env`, and set the variab
 LOG_LEVEL=info
 # Database vars
 PGHOST=localhost
-PGUSER=user
-PGPASSWORD=pass
+POSTGRES_USER=user
+POSTGRES_PASSWORD=pass
 PGPORT=5432
-PGDATABASE=db
+POSTGRES_DB=db
 ```
 
 Then install the deps and run it
@@ -40,3 +40,4 @@ yarn dev
 ## References
 
 [pg official docs](https://node-postgres.com/features/connecting)
+[gen_random_uuid and uuid_generate_v4](https://dba.stackexchange.com/questions/205902/postgresql-two-different-ways-to-generate-a-uuid-gen-random-uuid-vs-uuid-genera)

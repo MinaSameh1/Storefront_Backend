@@ -5,7 +5,7 @@ import { Pool, QueryResult } from 'pg'
 import { logger } from './.'
 
 /*
- * Pool connects using environment variables
+ * Pool connects and handles
  * From: https://node-postgres.com/features/connecting
  * NOTE: These are the vars it uses with examples:
  * PGUSER=dbuser
@@ -22,7 +22,12 @@ let pool: Pool
  */
 export function connect() {
   // As recommended by official docs to use pooling for web apps: https://node-postgres.com/features/pooling
-  pool = new Pool()
+  pool = new Pool({
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    host: process.env.PGHOST,
+    database: process.env.POSTGRES_DB
+  })
 }
 
 /*

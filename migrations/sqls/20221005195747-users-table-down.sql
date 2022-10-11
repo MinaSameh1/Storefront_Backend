@@ -1,0 +1,3 @@
+DROP FUNCTION IF EXISTS insert_user;
+
+DROP TABLE IF EXISTS store_users CASCADE;

@@ -5,7 +5,7 @@ import pinoExpress from 'express-pino-logger'
 import cors from 'cors'
 import { logger } from './utils'
 
-import { serverRouter } from './router'
+import { productRouter, serverRouter } from './router'
 import { Router } from 'express-serve-static-core'
 
 /*
@@ -56,7 +56,7 @@ function addRoutes(app: express.Application, Routes: Array<Router>) {
  */
 export function createExpressApp(): express.Application {
   const app = express()
-  const Routes = [serverRouter]
+  const Routes = [serverRouter, productRouter]
   configureServer(app)
   addRoutes(app, Routes)
   return app

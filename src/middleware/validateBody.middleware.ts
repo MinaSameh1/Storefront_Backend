@@ -3,7 +3,7 @@ import { validateType } from '../types'
 
 /**
  * @description Validates Body to be according to template
- * @param {validateType} Body : Template of the body, see ValidateType.
+ * @param {validateType} body : Template of the body, see ValidateType.
  * Continues to next handler or returns 400 with message.
  */
 export const validateBody =
@@ -27,6 +27,7 @@ export const validateBody =
               body[key].type
             } recieved ${typeof req.body[key]}!`
           )
+        // If there is min and max then check the value lays between them.
         else if ((max && max < req.body[key]) || (min && min > req.body[key])) {
           throw Error(
             `Number must be between ${min} and ${max} recieved ${req.body[key]}`

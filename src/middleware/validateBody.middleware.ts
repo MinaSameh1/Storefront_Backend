@@ -11,6 +11,11 @@ export const validateBody =
     try {
       // loop through the template keys
       for (const key of Object.keys(body)) {
+        let max: number | undefined = undefined
+        let min: number | undefined = undefined
+
+        if (body[key].max) max = body[key].max
+        if (body[key].min) min = body[key].min
         // If the value doesn't exist on body
         if (req.body[key] === undefined) {
           // Check if its optional or not
@@ -22,6 +27,11 @@ export const validateBody =
               body[key].type
             } recieved ${typeof req.body[key]}!`
           )
+        else if ((max && max < req.body[key]) || (min && min > req.body[key])) {
+          throw Error(
+            `Number must be between ${min} and ${max} recieved ${req.body[key]}`
+          )
+        }
       }
       next()
     } catch (err) {

@@ -37,6 +37,15 @@ yarn install
 yarn dev
 ```
 
+## Endpoints
+
+| Endpoint          | method | brief description                                                                                   |
+| ----------------- | ------ | --------------------------------------------------------------------------------------------------- |
+| /api/ping         | get    | Checks if api is working returns 200                                                                |
+| /api/products     | post   | creates product requires name and price                                                             |
+| /api/products     | get    | gets products, supports pagination using limit and page and filtering using category (all queries). |
+| /api/products/:id | get    | get a product using id                                                                              |
+
 ## References
 
 [pg official docs](https://node-postgres.com/features/connecting)

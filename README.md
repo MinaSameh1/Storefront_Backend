@@ -45,6 +45,11 @@ yarn dev
 | /api/products     | post   | creates product requires name and price                                                             |
 | /api/products     | get    | gets products, supports pagination using limit and page and filtering using category (all queries). |
 | /api/products/:id | get    | get a product using id                                                                              |
+## Examples
+* Example for getting products with all queries
+``` get /api/product
+GET /api/product?limit=1&page=2&category=test
+```
 
 ## References
 

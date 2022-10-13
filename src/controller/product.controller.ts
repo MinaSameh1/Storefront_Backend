@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { DatabaseError } from 'pg'
+import { uuidValidate } from '../utils'
 import { getProducts, createProduct } from '../service'
 import { product } from '../types'
 
@@ -30,6 +31,11 @@ export async function showProductsHandler(
       })
     }
 
+    if (req.params.id && !uuidValidate(req.params.id)) {
+      return res.status(400).json({
+        message: 'Bad uuid!'
+      })
+    }
     const result = await getProducts(limit, page, {
       id: req.params.id ?? undefined,
       category: req.query.category ? String(req.query.category) : undefined

@@ -1,20 +1,11 @@
-import request from 'supertest'
 import express from 'express'
-import { faker } from '@faker-js/faker'
+import request from 'supertest'
 import { createExpressApp } from '../../server'
-import { product } from '../../types'
 import { connect, disconnect } from '../../utils'
+import { generateProduct } from '../helpers'
 
 describe('Product endpoint', () => {
   let app: express.Application
-
-  const generateProduct = (category?: string): product => {
-    return {
-      name: faker.commerce.productName(),
-      price: Number(faker.commerce.price()),
-      category: category ?? faker.commerce.productMaterial()
-    }
-  }
 
   const testProduct = generateProduct('test')
 
@@ -157,6 +148,16 @@ describe('Product endpoint', () => {
       expect(res.body.currentPage).toBeUndefined()
     })
 
+    it('Should return 400 for bad uuid', async () => {
+      const res = await request(app).get('/api/product/baduuid')
+      expect(res.statusCode).toEqual(400)
+      expect(res.body.message).toBeDefined()
+      expect(res.body.totalPages).toBeUndefined()
+      expect(res.body.results).toBeUndefined()
+      expect(res.body.total).toBeUndefined()
+      expect(res.body.currentPage).toBeUndefined()
+    })
+
     it('Should get products with category', async () => {
       const res = await request(app).get('/api/product?category=test')
       expect(res.statusCode).toEqual(200)
@@ -191,6 +192,24 @@ describe('Product endpoint', () => {
       expect(res.body.total).toBeGreaterThan(1)
       expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
       expect(res.body.currentPage).toBeGreaterThanOrEqual(1)
+    })
+
+    it('Should get product with uuid', async () => {
+      const res = await request(app).get(`/api/product/${testProduct.id}`)
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.results).toBeDefined()
+      expect(res.body.results.length).toEqual(1)
+      // NOTE: This is done to change price to money format, ex: 70 to $70.00
+      expect(res.body.results[0]).toEqual({
+        ...testProduct,
+        price: testProduct.price.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        })
+      })
+      expect(res.body.total).toEqual(1)
+      expect(res.body.totalPages).toEqual(1)
+      expect(res.body.currentPage).toEqual(1)
     })
   })
 })

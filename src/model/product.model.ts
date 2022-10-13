@@ -6,7 +6,7 @@ import { query } from '../utils'
 // postgresql error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 
 export class productModel {
-  async create(product: Product): Promise<QueryResult<Product>> {
+  async create(product: Product): Promise<QueryResult<Product>['rows'][0]> {
     const result = await query('SELECT * from insert_product($1, $2, $3);', [
       product.name,
       product.price,
@@ -19,14 +19,14 @@ export class productModel {
     return query('SELECT * FROM products WHERE id = $1', [id])
   }
 
-  index(limit = 20, offset = 20): Promise<QueryResult<Product>> {
+  index(limit = 20, offset = 0): Promise<QueryResult<Product>> {
     return query('SELECT * FROM products LIMIT $1 OFFSET $2', [limit, offset])
   }
 
   indexByCategory(
     category: Product['category'],
     limit = 20,
-    offset = 20
+    offset = 0
   ): Promise<QueryResult<Product>> {
     return query(
       'SELECT * FROM products WHERE category = $1 LIMIT $2 OFFSET $3',

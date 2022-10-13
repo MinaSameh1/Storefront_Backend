@@ -1,22 +1,22 @@
 import express from 'express'
 import request from 'supertest'
-import { createExpressApp } from '../../server'
-import { connect, disconnect } from '../../utils'
-import { generateProduct } from '../helpers'
+import { product } from '../../types'
+import { afterHelper, beforeHelper, generateProduct } from '../helpers'
 
 describe('Product endpoint', () => {
   let app: express.Application
 
-  const testProduct = generateProduct('test')
+  let testProduct: product
 
   beforeAll(() => {
-    app = createExpressApp()
-    connect()
-    process.env.LOG_LEVEL = 'silent' // Turn off pino
+    // Generate fake products
+    testProduct = generateProduct('test')
+    // Create express app and connect to db.
+    app = beforeHelper(true)
   })
 
   afterAll(() => {
-    disconnect()
+    afterHelper()
   })
 
   describe('Create Route', () => {
@@ -138,16 +138,6 @@ describe('Product endpoint', () => {
       expect(res.body.currentPage).toBeUndefined()
     })
 
-    it('Should return 404 for non existing category', async () => {
-      const res = await request(app).get('/api/product?category=doesnot')
-      expect(res.statusCode).toEqual(404)
-      expect(res.body.message).toBeDefined()
-      expect(res.body.totalPages).toBeUndefined()
-      expect(res.body.results).toBeUndefined()
-      expect(res.body.total).toBeUndefined()
-      expect(res.body.currentPage).toBeUndefined()
-    })
-
     it('Should return 400 for bad uuid', async () => {
       const res = await request(app).get('/api/product/baduuid')
       expect(res.statusCode).toEqual(400)
@@ -162,7 +152,7 @@ describe('Product endpoint', () => {
       const res = await request(app).get('/api/product?category=test')
       expect(res.statusCode).toEqual(200)
       expect(res.body.results).toBeDefined()
-      expect(res.body.total).toBeGreaterThan(1)
+      expect(res.body.total).toBeGreaterThanOrEqual(1)
       expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
       expect(res.body.currentPage).toBeGreaterThanOrEqual(1)
     })

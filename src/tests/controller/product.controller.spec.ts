@@ -2,21 +2,21 @@ import request from 'supertest'
 import express from 'express'
 import { faker } from '@faker-js/faker'
 import { createExpressApp } from '../../server'
-import { product } from 'src/schema'
+import { product } from '../../types'
 import { connect, disconnect } from '../../utils'
 
 describe('Product endpoint', () => {
   let app: express.Application
 
-  const generateProduct = (): product => {
+  const generateProduct = (category?: string): product => {
     return {
       name: faker.commerce.productName(),
       price: Number(faker.commerce.price()),
-      category: faker.commerce.productMaterial()
+      category: category ?? faker.commerce.productMaterial()
     }
   }
 
-  const testProduct = generateProduct()
+  const testProduct = generateProduct('test')
 
   beforeAll(() => {
     app = createExpressApp()
@@ -95,6 +95,7 @@ describe('Product endpoint', () => {
       const res = await request(app).post('/api/product').send(testProduct)
       expect(res.statusCode).toEqual(200)
       expect(res.body.id).toBeDefined()
+      testProduct.id = res.body.id
       expect(res.body.name).toBeDefined()
       expect(res.body.price).toBeDefined()
     })
@@ -113,6 +114,83 @@ describe('Product endpoint', () => {
       expect(res.body.id).toBeDefined()
       expect(res.body.name).toBeDefined()
       expect(res.body.price).toBeDefined()
+    })
+  })
+
+  describe('Get route', () => {
+    it('Should get products', async () => {
+      const res = await request(app).get('/api/product')
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.results).toBeDefined()
+      expect(res.body.total).toBeGreaterThan(1)
+      expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
+      expect(res.body.currentPage).toBeGreaterThanOrEqual(1)
+    })
+
+    it('Should return 404 for missing page', async () => {
+      const res = await request(app).get('/api/product?page=100')
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.message).toBeDefined()
+      expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
+      expect(res.body.results).toBeUndefined()
+      expect(res.body.total).toBeUndefined()
+      expect(res.body.currentPage).toBeUndefined()
+    })
+
+    it('Should return 404 for non existing category', async () => {
+      const res = await request(app).get('/api/product?category=doesnot')
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.message).toBeDefined()
+      expect(res.body.totalPages).toBeUndefined()
+      expect(res.body.results).toBeUndefined()
+      expect(res.body.total).toBeUndefined()
+      expect(res.body.currentPage).toBeUndefined()
+    })
+
+    it('Should return 404 for non existing category', async () => {
+      const res = await request(app).get('/api/product?category=doesnot')
+      expect(res.statusCode).toEqual(404)
+      expect(res.body.message).toBeDefined()
+      expect(res.body.totalPages).toBeUndefined()
+      expect(res.body.results).toBeUndefined()
+      expect(res.body.total).toBeUndefined()
+      expect(res.body.currentPage).toBeUndefined()
+    })
+
+    it('Should get products with category', async () => {
+      const res = await request(app).get('/api/product?category=test')
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.results).toBeDefined()
+      expect(res.body.total).toBeGreaterThan(1)
+      expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
+      expect(res.body.currentPage).toBeGreaterThanOrEqual(1)
+    })
+
+    it('Should get products with limit', async () => {
+      const res = await request(app).get('/api/product?limit=10')
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.results).toBeDefined()
+      expect(res.body.total).toBeGreaterThan(1)
+      expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
+      expect(res.body.currentPage).toBeGreaterThanOrEqual(1)
+    })
+
+    it('Should get products with page', async () => {
+      const res = await request(app).get('/api/product?page=1')
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.results).toBeDefined()
+      expect(res.body.total).toBeGreaterThan(1)
+      expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
+      expect(res.body.currentPage).toBeGreaterThanOrEqual(1)
+    })
+
+    it('Should get products with page and limit', async () => {
+      const res = await request(app).get('/api/product?limit=2&page=1')
+      expect(res.statusCode).toEqual(200)
+      expect(res.body.results).toBeDefined()
+      expect(res.body.total).toBeGreaterThan(1)
+      expect(res.body.totalPages).toBeGreaterThanOrEqual(1)
+      expect(res.body.currentPage).toBeGreaterThanOrEqual(1)
     })
   })
 })

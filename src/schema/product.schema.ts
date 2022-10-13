@@ -1,11 +1,4 @@
-import { row, validateType } from '../types'
-
-export interface product extends row {
-  id?: string
-  name: string
-  price: number
-  category?: string
-}
+import { validateType } from '../types'
 
 // According to this check body.
 export const productTemplate: validateType = {

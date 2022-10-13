@@ -1,22 +1,25 @@
 import { logger, getPaginationInfo } from '../utils'
 import { Product, ProductResponseQuery } from '../types'
 import { productModel } from '../model'
+import { QueryResult } from 'pg'
 
 const model = new productModel()
 
 /**
  * @description Creates product.
  * @param {Product} product, must have name and price
- * @returns {Promise<QueryResult>} QueryResult.
+ * @returns {Promise<QueryResult<Product>['row'][0]>} QueryResult.
  */
-export function createProduct(product: Product) {
+export function createProduct(
+  product: Product
+): Promise<QueryResult<Product>['rows'][0]> {
   return model.create(product)
 }
 
 //// Function Overloading
 /**
  * @description Gets product by id
- * @param {{ string }} { id } suppling Id returns only that product id.
+ * @param {{ string }} { id } suppling Id returns only that product.
  * @returns {Promise<ProductResponseQuery>} Structured Response.
  */
 export async function getProducts({

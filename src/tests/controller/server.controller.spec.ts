@@ -1,13 +1,17 @@
 import request from 'supertest'
 import express from 'express'
-import { createExpressApp } from '../../server'
+import { afterHelper, beforeHelper } from '../helpers'
 
 describe('Server ping endpoint', () => {
   let app: express.Application
 
   beforeAll(() => {
-    app = createExpressApp()
+    app = beforeHelper(true)
     process.env.LOG_LEVEL = 'silent' // Turn off pino
+  })
+
+  afterAll(() => {
+    afterHelper()
   })
 
   it('should ping back', async () => {

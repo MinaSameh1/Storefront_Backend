@@ -1,11 +1,11 @@
 import express from 'express'
-import { createExpressApp } from '../server'
+import { beforeHelper } from './helpers'
 
 describe('Create Express App Should create the server', () => {
   let app: express.Application
 
   beforeAll(() => {
-    app = createExpressApp()
+    app = beforeHelper(true)
   })
 
   it('Should create the app', () => {

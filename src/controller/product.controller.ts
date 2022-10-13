@@ -36,10 +36,14 @@ export async function showProductsHandler(
         message: 'Bad uuid!'
       })
     }
-    const result = await getProducts(limit, page, {
-      id: req.params.id ?? undefined,
-      category: req.query.category ? String(req.query.category) : undefined
-    })
+    const result = await getProducts(
+      {
+        id: req.params.id ?? undefined,
+        category: req.query.category ? String(req.query.category) : undefined
+      },
+      limit,
+      page
+    )
 
     if (result) {
       if (result.currentPage - 1 > result.totalPages) {

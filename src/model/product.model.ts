@@ -1,4 +1,4 @@
-import { QueryResultRow } from 'pg'
+import { QueryResult } from 'pg'
 import { Product } from '../types'
 import { query } from '../utils'
 
@@ -6,7 +6,7 @@ import { query } from '../utils'
 // postgresql error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 
 export class productModel {
-  async create(product: Product) {
+  async create(product: Product): Promise<QueryResult<Product>> {
     const result = await query('SELECT * from insert_product($1, $2, $3);', [
       product.name,
       product.price,
@@ -19,7 +19,7 @@ export class productModel {
     return query('SELECT * FROM products WHERE id = $1', [id])
   }
 
-  index(limit = 20, offset = 20): Promise<QueryResultRow> {
+  index(limit = 20, offset = 20): Promise<QueryResult<Product>> {
     return query('SELECT * FROM products LIMIT $1 OFFSET $2', [limit, offset])
   }
 
@@ -27,7 +27,7 @@ export class productModel {
     category: Product['category'],
     limit = 20,
     offset = 20
-  ): Promise<QueryResultRow> {
+  ): Promise<QueryResult<Product>> {
     return query(
       'SELECT * FROM products WHERE category = $1 LIMIT $2 OFFSET $3',
       [category, limit, offset]

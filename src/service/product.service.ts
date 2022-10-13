@@ -88,9 +88,9 @@ export async function getProducts(
 export async function getProducts(
   {
     // eslint-disable-next-line no-unused-vars
-    id = undefined,
+    id,
     // eslint-disable-next-line no-unused-vars
-    category = undefined
+    category
   }: {
     id?: Product['id']
     category?: Product['category']

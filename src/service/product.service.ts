@@ -99,9 +99,9 @@ export async function getProducts(
     category?: Product['category']
   },
   // eslint-disable-next-line no-unused-vars
-  limit: number,
+  limit?: number,
   // eslint-disable-next-line no-unused-vars
-  page: number
+  page?: number
 ): Promise<ProductResponseQuery>
 
 export async function getProducts(

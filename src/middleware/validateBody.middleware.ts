@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { validationError } from '../utils'
 import { validateType } from '../types'
 
 /**
@@ -19,26 +20,27 @@ export const validateBody =
         // If the value doesn't exist on body
         if (req.body[key] === undefined) {
           // Check if its optional or not
-          if (!body[key].optional) throw Error(`Missing ${key}!`)
+          if (!body[key].optional) throw new validationError(`Missing ${key}!`)
           // Check if the value is the same type as the template.
         } else if (typeof req.body[key] !== body[key].type)
-          throw Error(
+          throw new validationError(
             `Wrong type of ${key}, should be ${
               body[key].type
             } recieved ${typeof req.body[key]}!`
           )
         // If there is min and max then check the value lays between them.
         else if ((max && max < req.body[key]) || (min && min > req.body[key])) {
-          throw Error(
+          throw new validationError(
             `Number must be between ${min} and ${max} recieved ${req.body[key]}`
           )
         }
       }
       next()
     } catch (err) {
-      if (err instanceof Error)
+      if (err instanceof validationError)
         // Returns 400 (Bad Request) with msg on why it happened.
         return res.status(400).json({ message: err.message, error: true })
+      next(err)
     }
   }
 

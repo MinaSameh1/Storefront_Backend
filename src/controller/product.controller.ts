@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { DatabaseError } from 'pg'
 import { uuidValidate } from '../utils'
 import { getProducts, createProduct } from '../service'
-import { product } from '../types'
+import { Product } from '../types'
 
 //  TODO: Top 5 most popular products
 
@@ -64,7 +64,7 @@ export async function showProductsHandler(
  */
 export async function createProductHandler(
   // Since we already validated the body, we know its of type product.
-  req: Request<unknown, unknown, product>,
+  req: Request<unknown, unknown, Product>,
   res: Response,
   next: NextFunction
 ) {

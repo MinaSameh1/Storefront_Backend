@@ -1,12 +1,12 @@
 import { QueryResultRow } from 'pg'
-import { product } from '../types'
+import { Product } from '../types'
 import { query } from '../utils'
 
 // NOTE: Error handling is done through the handler, as postgresql has great error codes
 // postgresql error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 
 export class productModel {
-  async create(product: product) {
+  async create(product: Product) {
     const result = await query('SELECT * from insert_product($1, $2, $3);', [
       product.name,
       product.price,
@@ -15,7 +15,7 @@ export class productModel {
     return result.rows[0]
   }
 
-  async showById(id: product['id']) {
+  async showById(id: Product['id']) {
     return query('SELECT * FROM products WHERE id = $1', [id])
   }
 
@@ -24,7 +24,7 @@ export class productModel {
   }
 
   indexByCategory(
-    category: product['category'],
+    category: Product['category'],
     limit = 20,
     offset = 20
   ): Promise<QueryResultRow> {

@@ -1,12 +1,12 @@
 import express from 'express'
 import request from 'supertest'
-import { product } from '../../types'
+import { Product } from '../../types'
 import { afterHelper, beforeHelper, generateProduct } from '../helpers'
 
 describe('Product endpoint', () => {
   let app: express.Application
 
-  let testProduct: product
+  let testProduct: Product
 
   beforeAll(() => {
     // Generate fake products

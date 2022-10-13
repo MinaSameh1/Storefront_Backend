@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { product } from '../../types'
+import { Product } from '../../types'
 
-export const generateProduct = (category?: string): product => {
+export const generateProduct = (category?: string): Product => {
   return {
     name: faker.commerce.productName(),
     price: Number(faker.commerce.price()),

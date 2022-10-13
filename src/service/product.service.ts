@@ -1,10 +1,10 @@
 import { logger, getPaginationInfo } from '../utils'
-import { product, ReturnProductQuery } from '../types'
+import { Product, ProductResponseQuery } from '../types'
 import { productModel } from '../model'
 
 const model = new productModel()
 
-export function createProduct(product: product) {
+export function createProduct(product: Product) {
   return model.create(product)
 }
 
@@ -15,10 +15,10 @@ export async function getProducts(
     id = undefined,
     category = undefined
   }: {
-    id?: product['id']
-    category?: product['category']
+    id?: Product['id']
+    category?: Product['category']
   }
-): Promise<ReturnProductQuery> {
+): Promise<ProductResponseQuery> {
   let select = 'SELECT * FROM products'
 
   if (id) {

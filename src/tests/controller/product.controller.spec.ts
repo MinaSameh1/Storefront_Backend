@@ -1,7 +1,7 @@
 import express from 'express'
 import request from 'supertest'
 import { Product } from '../../types'
-import { afterHelper, beforeHelper, generateProduct } from '../helpers'
+import { beforeHelper, generateProduct } from '../helpers'
 
 describe('Product endpoint', () => {
   let app: express.Application
@@ -13,10 +13,6 @@ describe('Product endpoint', () => {
     testProduct = generateProduct('test')
     // Create express app and connect to db.
     app = beforeHelper(true)
-  })
-
-  afterAll(() => {
-    afterHelper()
   })
 
   describe('Create Route', () => {

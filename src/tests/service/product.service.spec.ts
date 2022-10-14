@@ -1,6 +1,6 @@
 import { createProduct, getProducts } from '../../service'
 import { productModel } from '../../model'
-import { afterHelper, beforeHelper, generateProduct } from '../helpers'
+import { beforeHelper, generateProduct } from '../helpers'
 
 describe('Product service', () => {
   const testProduct = generateProduct()
@@ -13,10 +13,6 @@ describe('Product service', () => {
       i--
       await model.create(generateProduct('testService'))
     }
-  })
-
-  afterAll(() => {
-    afterHelper()
   })
 
   it('Should create product', async () => {

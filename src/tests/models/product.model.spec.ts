@@ -1,6 +1,6 @@
 import { Product } from 'src/types'
 import { productModel } from '../../model/product.model'
-import { afterHelper, beforeHelper, generateProduct } from '../helpers'
+import { beforeHelper, generateProduct } from '../helpers'
 
 describe('Product Model', () => {
   let model: productModel
@@ -17,8 +17,6 @@ describe('Product Model', () => {
       await model.create(generateProduct('testModel'))
     }
   })
-
-  afterAll(afterHelper)
 
   it('Should create product', async () => {
     const product = generateProduct()

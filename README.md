@@ -19,7 +19,8 @@ PGHOST=localhost
 POSTGRES_USER=user
 POSTGRES_PASSWORD=pass
 PGPORT=5432
-POSTGRES_DB=db # devDb for dev, prodDb for prod, testDb for test, also change them in database.json
+# Change this in different .env files!
+POSTGRES_DB=db
 ```
 
 **Important notice**: Tests won't run without a .env.test file!!!!!!!  
@@ -29,6 +30,7 @@ So create the .env files (3, one for each node\_env) depending on your need.
 Then install the deps and run it
 ```
 yarn install
+yarn run migrate:prod:up
 yarn build
 yarn start
 ```
@@ -37,6 +39,7 @@ for Development
 
 ```
 yarn install
+yarn run migrate:dev:up
 yarn dev
 ```
 

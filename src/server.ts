@@ -1,13 +1,13 @@
-import express from 'express'
-import * as dotenv from 'dotenv'
-import helmet from 'helmet'
-import pinoExpress from 'express-pino-logger'
 import cors from 'cors'
+import * as dotenv from 'dotenv'
+import express from 'express'
+import pinoExpress from 'express-pino-logger'
+import helmet from 'helmet'
 import { getLogger } from './utils'
 
-import { productRouter, serverRouter } from './router'
 import { Router } from 'express-serve-static-core'
 import path from 'path'
+import { productRouter, serverRouter, userRouter } from './router'
 
 /*
  * @description: Configures the express server, from json space to cors.
@@ -63,7 +63,7 @@ function addRoutes(app: express.Application, Routes: Array<Router>) {
  */
 export function createExpressApp(): express.Application {
   const app = express()
-  const Routes = [serverRouter, productRouter]
+  const Routes = [serverRouter, productRouter, userRouter]
   configureServer(app)
   addRoutes(app, Routes)
   return app

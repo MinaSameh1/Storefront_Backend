@@ -10,17 +10,17 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Products
 
-- Index
-- Show
-- Create [token required]
+- Index `GET /api/product`
+- Show `GET /api/product/:uuid`
+- Create [token required] `POST /api/product`
 - [OPTIONAL] Top 5 most popular products
-- [OPTIONAL] Products by category (args: product category)
+- [OPTIONAL] Products by category (args: product category) `GET /api/product?category=productCategory`
 
 #### Users
 
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required] `GET /api/user`
+- Show [token required] `GET /api/user/:uuid`
+- Create N[token required] `POST /api/user`
 
 #### Orders
 

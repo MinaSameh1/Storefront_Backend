@@ -18,6 +18,16 @@ export function createProduct(
 
 //// Function Overloading
 /**
+ * @description Gets products
+ * @param {object} {} suppling empty object gets products according to default values, 20 limit and first page.
+ * @returns {Promise<ProductResponseQuery>} Structured Response.
+ */
+export async function getProducts(
+  // eslint-disable-next-line no-empty-pattern
+  {}
+): Promise<ProductResponseQuery>
+
+/**
  * @description Gets product by id
  * @param {{ string }} { id } suppling Id returns only that product.
  * @returns {Promise<ProductResponseQuery>} Structured Response.

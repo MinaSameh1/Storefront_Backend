@@ -45,13 +45,18 @@ yarn dev
 | /api/products     | post   | creates product requires name and price                                                             |
 | /api/products     | get    | gets products, supports pagination using limit and page and filtering using category (all queries). |
 | /api/products/:id | get    | get a product using id                                                                              |
+
 ## Examples
-* Example for getting products with all queries
-``` get /api/product
+
+- Example for getting products with all queries
+
+```get /api/product
 GET /api/product?limit=1&page=2&category=test
 ```
 
 ## References
 
-[pg official docs](https://node-postgres.com/features/connecting)    
-[gen_random_uuid and uuid_generate_v4](https://dba.stackexchange.com/questions/205902/postgresql-two-different-ways-to-generate-a-uuid-gen-random-uuid-vs-uuid-genera)
+[pg official docs](https://node-postgres.com/features/connecting)  
+[gen_random_uuid and uuid_generate_v4](https://dba.stackexchange.com/questions/205902/postgresql-two-different-ways-to-generate-a-uuid-gen-random-uuid-vs-uuid-genera)  
+[Typescript style guide](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#null-and-undefined)  
+[Udaicty style guide](https://udacity.github.io/frontend-nanodegree-styleguide/javascript.html)

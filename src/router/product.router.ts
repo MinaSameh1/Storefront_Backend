@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { validateBody } from '../middleware'
+import { requireUser, validateBody } from '../middleware'
 import { createProductHandler, showProductsHandler } from '../controller'
 import { PRODUCT_ENDPOINT } from '../utils'
 import { productTemplate } from '../schema'
@@ -12,6 +12,7 @@ productRouter.get(`${PRODUCT_ENDPOINT}/:id`, showProductsHandler)
 
 productRouter.post(
   PRODUCT_ENDPOINT,
+  requireUser,
   validateBody(productTemplate),
   createProductHandler
 )

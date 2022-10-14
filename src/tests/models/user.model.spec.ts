@@ -21,8 +21,11 @@ describe('User model', () => {
 
   it('Should get user by username', async () => {
     const result = await model.showByUsername(user.username)
+    expect(result.rows.length).toEqual(1)
     expect(result.rows[0].id).toBeDefined()
-    expect(result.rows[0].username).toBeDefined()
+    expect(result.rows[0].username).toEqual(user.username)
+    expect(result.rows[0].firstname).toEqual(user.firstname)
+    expect(result.rows[0].lastname).toEqual(user.lastname)
     expect(result.rows[0].pass).toBeDefined()
   })
 

@@ -14,8 +14,10 @@ To run the api, copy the `.env.example` file to `.env.development` or `.env.prod
 # .env.example
 ## Note: `silent` will make it not output anything, recommend for tests.
 LOG_LEVEL=info
+# user vars
 SALT_ROUNDS=10
 BCRYPT_PASS=pass
+TOKEN_SECRET=secret
 # Database vars
 PGPORT=5432
 PGHOST=localhost

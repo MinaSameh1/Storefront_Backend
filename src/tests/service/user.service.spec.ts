@@ -1,8 +1,9 @@
-import { getUsers, createUser } from '../../service'
+import { getUsers, createUser, loginUser } from '../../service'
 import { beforeHelper } from '../helpers'
 import { userModel } from '../../model'
 import { generateUser } from '../helpers/generateUser'
 import { StoreUser } from '../../types'
+import { verifyJwt } from '../../utils'
 
 describe('User Service', () => {
   const model = new userModel()
@@ -59,5 +60,15 @@ describe('User Service', () => {
     expect(result.total).toBeGreaterThanOrEqual(4)
     expect(result.totalPages).toBeGreaterThanOrEqual(1)
     expect(result.currentPage).toEqual(2)
+  })
+
+  // Consider this a test for signJwt and verify as well.
+  it('Should login in', async () => {
+    const userLogin = generateUser()
+    await createUser(userLogin)
+    const token = await loginUser(userLogin)
+    expect(token).toBeInstanceOf(String)
+    const { expired } = verifyJwt(token ?? '')
+    expect(expired).toBeFalse()
   })
 })

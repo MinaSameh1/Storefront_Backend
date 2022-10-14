@@ -2,25 +2,41 @@ import express from 'express'
 import request from 'supertest'
 import { Product } from '../../types'
 import { beforeHelper, generateProduct } from '../helpers'
+import { createUser } from '../../service'
+import { signJwt } from '../../utils'
+import { generateUser } from '../helpers/generateUser'
 
 describe('Product endpoint', () => {
   let app: express.Application
-
   let testProduct: Product
 
-  beforeAll(() => {
+  beforeAll(async () => {
     // Generate fake products
     testProduct = generateProduct('test')
+
     // Create express app and connect to db.
     app = beforeHelper(true)
   })
 
   describe('Create Route', () => {
+    let token: string
+
+    beforeAll(async () => {
+      // Create a user to create products with.
+      const userData = generateUser()
+      const result = await createUser(userData)
+      expect(result.id).toBeInstanceOf(String)
+      userData.id = String(result.id)
+      token = signJwt(userData)
+    })
+
     it('should not create on missing name', async () => {
       const res = await request(app)
         .post('/api/product')
         .send({})
         .set('Accept', 'application/json')
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(400)
       expect(res.body.message).toBeDefined()
       expect(res.body.error).toBeTrue()
@@ -31,6 +47,8 @@ describe('Product endpoint', () => {
         .post('/api/product')
         .send({ name: 'test' })
         .set('Accept', 'application/json')
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(400)
       expect(res.body.message).toBeDefined()
       expect(res.body.error).toBeTrue()
@@ -45,6 +63,8 @@ describe('Product endpoint', () => {
           category: 1
         })
         .set('Accept', 'application/json')
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(400)
       expect(res.body.message).toBeDefined()
       expect(res.body.error).toBeTrue()
@@ -59,6 +79,8 @@ describe('Product endpoint', () => {
           price: 10000
         })
         .set('Accept', 'application/json')
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(400)
       expect(res.body.message).toBeDefined()
       expect(res.body.error).toBeTrue()
@@ -73,13 +95,19 @@ describe('Product endpoint', () => {
           price: 0
         })
         .set('Accept', 'application/json')
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(400)
       expect(res.body.message).toBeDefined()
       expect(res.body.error).toBeTrue()
     })
 
     it('should create the product', async () => {
-      const res = await request(app).post('/api/product').send(testProduct)
+      const res = await request(app)
+        .post('/api/product')
+        .send(testProduct)
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(200)
       expect(res.body.id).toBeDefined()
       testProduct.id = res.body.id
@@ -88,7 +116,11 @@ describe('Product endpoint', () => {
     })
 
     it('should not create on using the same product name', async () => {
-      const res = await request(app).post('/api/product').send(testProduct)
+      const res = await request(app)
+        .post('/api/product')
+        .send(testProduct)
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(400)
       expect(res.body.message).toBeDefined()
     })
@@ -96,7 +128,11 @@ describe('Product endpoint', () => {
     it('should create the product without category', async () => {
       const product = generateProduct()
       product.category = undefined
-      const res = await request(app).post('/api/product').send(product)
+      const res = await request(app)
+        .post('/api/product')
+        .send(product)
+        .set('authorization', 'Bearer ' + token)
+
       expect(res.statusCode).toEqual(200)
       expect(res.body.id).toBeDefined()
       expect(res.body.name).toBeDefined()

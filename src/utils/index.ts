@@ -1,4 +1,5 @@
 export * from './logger'
+export * from './jwt'
 export * from './checkMinMax'
 export * from './constants'
 export * from './db'

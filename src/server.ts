@@ -8,6 +8,7 @@ import { getLogger } from './utils'
 import { Router } from 'express-serve-static-core'
 import path from 'path'
 import { productRouter, serverRouter, userRouter } from './router'
+import { deseralizeUser } from './middleware'
 
 /*
  * @description: Configures the express server, from json space to cors.
@@ -26,6 +27,13 @@ function configureServer(app: express.Application) {
   app.use(cors())
   // Use pino to log requests, Note: Depends on ENV.LOG_LEVEL
   app.use(pinoExpress({ logger: getLogger() }))
+}
+
+/*
+ * @description Adds middlewares to the app
+ */
+function addMiddleware(app: express.Application) {
+  app.use(deseralizeUser)
 }
 
 /*
@@ -64,8 +72,9 @@ function addRoutes(app: express.Application, Routes: Array<Router>) {
 export function createExpressApp(): express.Application {
   const app = express()
   const Routes = [serverRouter, productRouter, userRouter]
-  configureServer(app)
-  addRoutes(app, Routes)
+  configureServer(app) // first config
+  addMiddleware(app) // then global middleware
+  addRoutes(app, Routes) // then routes :D
   return app
 }
 

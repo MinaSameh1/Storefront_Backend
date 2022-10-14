@@ -16,7 +16,7 @@ export class userModel {
   showByUsername(
     username: StoreUser['username']
   ): Promise<QueryResult<StoreUser>> {
-    return query('SELECT * FROM store_users WHERE username =$1', [username])
+    return query('SELECT * FROM store_users WHERE username = $1', [username])
   }
 
   index(limit = 20, offset = 0): Promise<QueryResult<StoreUser>> {

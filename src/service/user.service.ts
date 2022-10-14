@@ -1,16 +1,18 @@
-import { hashSync } from 'bcrypt'
+import { compareSync, hashSync } from 'bcrypt'
 import { userModel } from '../model'
 import { StoreUser, UserResponseQuery } from '../types'
-import { getPaginationInfo } from '../utils'
+import {
+  getPaginationInfo,
+  logger,
+  PEPPER,
+  SALT_ROUNDS,
+  signJwt
+} from '../utils'
 
 const model = new userModel()
 
 export function createUser(user: StoreUser) {
-  const pepper = process.env.BCRYPT_PASS ?? 'pass'
-  const saltRounds: number = process.env.SALT_ROUNDS
-    ? parseInt(process.env.SALT_ROUNDS)
-    : 20
-  const hash = hashSync(user.pass + pepper, saltRounds)
+  const hash = hashSync(user.pass + PEPPER, SALT_ROUNDS)
   return model.create({ ...user, pass: hash })
 }
 
@@ -87,4 +89,18 @@ export async function getUsers({
     totalPages,
     currentPage: page
   }
+}
+
+export async function loginUser({
+  username,
+  pass
+}: Pick<StoreUser, 'username' | 'pass'>): Promise<string | undefined> {
+  // get user and compare it.
+  logger.info('Recieved name and pass comparing...')
+  const result = await model.showByUsername(username)
+  if (compareSync(pass + PEPPER, result.rows[0].pass ?? '')) {
+    return signJwt(result.rows[0])
+  }
+  return undefined
+  // signJwt
 }

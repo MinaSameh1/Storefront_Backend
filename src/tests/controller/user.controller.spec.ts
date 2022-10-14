@@ -2,7 +2,7 @@ import { beforeHelper } from '../helpers'
 import { generateUser } from '../helpers/generateUser'
 import request from 'supertest'
 import { Application } from 'express'
-import { USER_ENDPOINT } from '../../utils'
+import { signJwt, USER_ENDPOINT } from '../../utils'
 import { createUser } from '../../service'
 
 describe('User Route', () => {
@@ -63,6 +63,7 @@ describe('User Route', () => {
       expect(result.body.username).toBeDefined()
       expect(result.body.firstname).toBeDefined()
       expect(result.body.lastname).toBeDefined()
+      expect(result.body.token).toBeDefined()
       expect(result.body.pass).toBeUndefined()
     })
 
@@ -76,12 +77,15 @@ describe('User Route', () => {
 
   describe('Get ', () => {
     const userGet = generateUser()
+    let token: string
 
     beforeAll(async () => {
       const result = await createUser(userGet)
       expect(result.id).toBeDefined()
       expect(result.id).toBeInstanceOf(String)
       userGet.id = String(result.id)
+      token = signJwt(userGet)
+
       let i = 4
       while (i > 0) {
         i--
@@ -89,8 +93,11 @@ describe('User Route', () => {
       }
     })
 
-    it('Should get products', async () => {
-      const result = await request(app).get(USER_ENDPOINT)
+    it(' Protected Should get users', async () => {
+      const result = await request(app)
+        .get(USER_ENDPOINT)
+        .set('authorization', 'Bearer ' + token)
+
       expect(result.statusCode).toEqual(200)
       expect(result.body.results).toBeDefined()
       expect(result.body.results.length).toBeGreaterThanOrEqual(1)
@@ -99,8 +106,10 @@ describe('User Route', () => {
       expect(result.body.currentPage).toEqual(1)
     })
 
-    it('Should get one product by id', async () => {
-      const result = await request(app).get(`${USER_ENDPOINT}/${userGet.id}`)
+    it(' Protected Should get one user by id', async () => {
+      const result = await request(app)
+        .get(`${USER_ENDPOINT}/${userGet.id}`)
+        .set('authorization', 'Bearer ' + token)
       expect(result.statusCode).toEqual(200)
       expect(result.body.results).toBeDefined()
       expect(result.body.results.length).toEqual(1)
@@ -109,12 +118,12 @@ describe('User Route', () => {
       expect(result.body.currentPage).toEqual(1)
     })
 
-    it('Should get products limit and page query', async () => {
+    it(' Protected Should get users limit and page query', async () => {
       const page = 2
       const limit = 2
-      const result = await request(app).get(
-        `${USER_ENDPOINT}?limit=${limit}&page=${page}`
-      )
+      const result = await request(app)
+        .get(`${USER_ENDPOINT}?limit=${limit}&page=${page}`)
+        .set('authorization', 'Bearer ' + token)
       expect(result.statusCode).toEqual(200)
       expect(result.body.results).toBeDefined()
       expect(result.body.results.length).toEqual(limit)

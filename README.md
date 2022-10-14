@@ -15,39 +15,37 @@ To run the api, copy the `.env.example` file to `.env.development` or `.env.prod
 ## Note: `silent` will make it not output anything
 LOG_LEVEL=info
 # Database vars
+PGPORT=5432
 PGHOST=localhost
 POSTGRES_USER=user
 POSTGRES_PASSWORD=pass
-PGPORT=5432
-# Change this in different .env files!
-POSTGRES_DB=db
+POSTGRES_DB=db # Change this in different .env files for different dbs!
 ```
 
 **Important notice**: Tests won't run without a .env.test file!!!!!!!  
 Db-migrate loads custom dotenv paths as well ([Beta feature](https://github.com/db-migrate/node-db-migrate/issues/517))  
 So create the .env files (3, one for each node\_env) depending on your need.  
 
-Then install the deps and run it
+#### Production
 ```
+cp .env.example .env.production # edit it and set env vars
 yarn install
 yarn run migrate:prod:up
 yarn build
 yarn start
 ```
 
-for Development
-
+#### Development
 ```
+cp .env.example .env.development # edit it and set env vars
 yarn install
 yarn run migrate:dev:up
 yarn dev
 ```
 
-for tests
-
+#### Tests
 ```
-cp .env.example .env.test
-# Edit `.env.test`, recommend a different db than production or dev.
+cp .env.example .env.test # edit it and set env vars
 yarn run test
 ```
 

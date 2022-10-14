@@ -23,7 +23,6 @@ export function beforeHelper(startServer = false): Application | undefined {
   })
   // Connect to db.
   connect()
-  process.env.LOG_LEVEL = 'silent' // Turn off pino
 
   // Create express app
   if (startServer) return createExpressApp()

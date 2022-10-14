@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv'
 import helmet from 'helmet'
 import pinoExpress from 'express-pino-logger'
 import cors from 'cors'
-import { logger } from './utils'
+import { getLogger } from './utils'
 
 import { productRouter, serverRouter } from './router'
 import { Router } from 'express-serve-static-core'
@@ -25,7 +25,7 @@ function configureServer(app: express.Application) {
   app.use(helmet()) // Security
   app.use(cors())
   // Use pino to log requests, Note: Depends on ENV.LOG_LEVEL
-  app.use(pinoExpress({ logger }))
+  app.use(pinoExpress({ logger: getLogger() }))
 }
 
 /*

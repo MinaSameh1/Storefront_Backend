@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { validationError } from '../utils'
 import { validateType } from '../types'
+import { lessThan, moreThan, validationError } from '../utils'
 
 /**
  * @description Validates Body to be according to template
@@ -14,24 +14,30 @@ export const validateBody =
       for (const key of Object.keys(body)) {
         let max: number | undefined = undefined
         let min: number | undefined = undefined
+        const element = req.body[key]
 
         if (body[key].max) max = body[key].max
         if (body[key].min) min = body[key].min
         // If the value doesn't exist on body
-        if (req.body[key] === undefined) {
+        if (element === undefined) {
           // Check if its optional or not
           if (!body[key].optional) throw new validationError(`Missing ${key}!`)
           // Check if the value is the same type as the template.
-        } else if (typeof req.body[key] !== body[key].type)
+        } else if (typeof element !== body[key].type)
           throw new validationError(
             `Wrong type of ${key}, should be ${
               body[key].type
-            } recieved ${typeof req.body[key]}!`
+            } recieved ${typeof element}!`
           )
         // If there is min and max then check the value lays between them.
-        else if ((max && max < req.body[key]) || (min && min > req.body[key])) {
+        else if (
+          (max && moreThan(element, max)) ||
+          (min && lessThan(element, min))
+        ) {
           throw new validationError(
-            `Number must be between ${min} and ${max} recieved ${req.body[key]}`
+            `${key} must be between ${min} and ${max} recieved ${
+              typeof element === 'string' ? element.length : element
+            }`
           )
         }
       }

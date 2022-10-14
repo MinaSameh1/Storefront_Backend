@@ -127,6 +127,13 @@
   resolved "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.3.tgz"
   integrity sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==
 
+"@types/bcrypt@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-5.0.0.tgz#a835afa2882d165aff5690893db314eaa98b9f20"
+  integrity sha512-agtcFKaruL8TmcvqbndlqHPSJgsolhf/qPWchFlgnW1gECTN/nKbFcoFnvKAQRFfKbh+BO6A3SWdJu9t+xF3Lw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/body-parser@*":
   version "1.19.2"
   resolved "https://registry.npmjs.org/@types/body-parser/-/body-parser-1.19.2.tgz"
@@ -845,7 +852,7 @@ db-migrate-shared@^1.2.0:
   resolved "https://registry.yarnpkg.com/db-migrate-shared/-/db-migrate-shared-1.2.0.tgz#6125be1b3a5e661229fc75d50c85f6c3ffadbede"
   integrity sha512-65k86bVeHaMxb2L0Gw3y5V+CgZSRwhVQMwDMydmw5MvIpHHwD6SmBciqIwHsZfzJ9yzV/yYhdRefRM6FV5/siw==
 
-db-migrate@^0.11.16:
+db-migrate@^1.0.0-beta.18:
   version "1.0.0-beta.18"
   resolved "https://registry.yarnpkg.com/db-migrate/-/db-migrate-1.0.0-beta.18.tgz#aff2d34306de62cecd6a47a8b8db5d9271f1bb22"
   integrity sha512-Rc+8VsxNPkQVwKTejPORcSR7F6Vtyzzl5vXhSRfcx83GVJ05JtHnYnfhYDGVr7lMCOYBgO5xnSxKH8Lh2So2WQ==

@@ -1,4 +1,7 @@
 {
+  "defaultEnv": {
+    "ENV": "NODE_ENV"
+  },
   "production": {
     "driver": "pg",
     "host": {
@@ -17,7 +20,7 @@
       "ENV": "POSTGRES_DB"
     }
   },
-  "dev": {
+  "development": {
     "driver": "pg",
     "host": {
       "ENV": "PGHOST"

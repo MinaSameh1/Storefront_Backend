@@ -1,5 +1,5 @@
 import express from 'express'
-import 'dotenv/config'
+import * as dotenv from 'dotenv'
 import helmet from 'helmet'
 import pinoExpress from 'express-pino-logger'
 import cors from 'cors'
@@ -7,11 +7,18 @@ import { logger } from './utils'
 
 import { productRouter, serverRouter } from './router'
 import { Router } from 'express-serve-static-core'
+import path from 'path'
 
 /*
  * @description: Configures the express server, from json space to cors.
  */
 function configureServer(app: express.Application) {
+  dotenv.config({
+    path: path.resolve(
+      process.cwd(),
+      `.env.${process.env.NODE_ENV ?? 'development'}`
+    )
+  })
   app.set('json spaces', 2) // I like the spaces to be 2.
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))

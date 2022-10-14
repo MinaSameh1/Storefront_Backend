@@ -6,9 +6,9 @@ in a page, I did the backend.
 
 It is a Nodejs express API and postgres as database.
 
-## Running the API
+## Running/testing the API
 
-to run in production, copy the `.env.example` file to `.env`, and set the variables as needed.
+To run in production, copy the `.env.example` file to `.env.development` or `.env.production` for dev and prod respectfully, and set the variables as needed.
 
 ```.env
 # .env.example
@@ -19,11 +19,14 @@ PGHOST=localhost
 POSTGRES_USER=user
 POSTGRES_PASSWORD=pass
 PGPORT=5432
-POSTGRES_DB=db
+POSTGRES_DB=db # devDb for dev, prodDb for prod, testDb for test, also change them in database.json
 ```
 
-Then install the deps and run it
+**Important notice**: Tests won't run without a .env.test file!!!!!!!  
+Db-migrate loads custom dotenv paths as well ([Beta feature](https://github.com/db-migrate/node-db-migrate/issues/517))  
+So create the .env files (3, one for each node\_env) depending on your need.  
 
+Then install the deps and run it
 ```
 yarn install
 yarn build
@@ -35,6 +38,14 @@ for Development
 ```
 yarn install
 yarn dev
+```
+
+for tests
+
+```
+cp .env.example .env.test
+# Edit `.env.test`, recommend a different db than production or dev.
+yarn run test
 ```
 
 ## Endpoints

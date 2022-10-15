@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { verifyJwt } from '../utils'
 
+/**
+ * @description Verifys token, always continues next even if token not found.
+ * The job of requireing user is left to another middleware.
+ */
 export async function deseralizeUser(
   req: Request,
   res: Response,

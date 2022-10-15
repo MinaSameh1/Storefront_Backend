@@ -4,29 +4,31 @@ import { lessThan, moreThan, validationError } from '../utils'
 
 /**
  * @description Validates Body to be according to template
- * @param {validateType} body : Template of the body, see ValidateType.
+ * @param {validateType} template : Template of the body, see ValidateType.
  * Continues to next handler or returns 400 with message.
  */
 export const validateBody =
-  (body: validateType) => (req: Request, res: Response, next: NextFunction) => {
+  (template: validateType) =>
+  (req: Request, res: Response, next: NextFunction) => {
     try {
       // loop through the template keys
-      for (const key of Object.keys(body)) {
+      for (const key of Object.keys(template)) {
         let max: number | undefined = undefined
         let min: number | undefined = undefined
         const element = req.body[key]
 
-        if (body[key].max) max = body[key].max
-        if (body[key].min) min = body[key].min
+        if (template[key].max) max = template[key].max
+        if (template[key].min) min = template[key].min
         // If the value doesn't exist on body
         if (element === undefined) {
           // Check if its optional or not
-          if (!body[key].optional) throw new validationError(`Missing ${key}!`)
+          if (!template[key].optional)
+            throw new validationError(`Missing ${key}!`)
           // Check if the value is the same type as the template.
-        } else if (typeof element !== body[key].type)
+        } else if (typeof element !== template[key].type)
           throw new validationError(
             `Wrong type of ${key}, should be ${
-              body[key].type
+              template[key].type
             } recieved ${typeof element}!`
           )
         // If there is min and max then check the value lays between them.
@@ -35,7 +37,7 @@ export const validateBody =
           (min && lessThan(element, min))
         ) {
           throw new validationError(
-            `${key} must be between ${min} and ${max} recieved ${
+            `${key} length must be between ${min} and ${max} recieved ${
               typeof element === 'string' ? element.length : element
             }`
           )

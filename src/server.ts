@@ -5,10 +5,9 @@ import pinoExpress from 'express-pino-logger'
 import helmet from 'helmet'
 import { getLogger } from './utils'
 
-import { Router } from 'express-serve-static-core'
 import path from 'path'
-import { productRouter, serverRouter, userRouter } from './router'
 import { deseralizeUser } from './middleware'
+import { productRouter, serverRouter, userRouter } from './router'
 
 /*
  * @description: Configures the express server, from json space to cors.
@@ -39,7 +38,7 @@ function addMiddleware(app: express.Application) {
 /*
  * @description Adds the routes to the app, along with an error handler.
  */
-function addRoutes(app: express.Application, Routes: Array<Router>) {
+function addRoutes(app: express.Application, Routes: Array<express.Router>) {
   for (const route of Routes) {
     app.use(route)
   }

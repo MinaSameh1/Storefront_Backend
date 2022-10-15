@@ -1,5 +1,4 @@
-import { beforeHelper } from '../helpers'
-import { generateUser } from '../helpers/generateUser'
+import { beforeHelper, generateUser } from '../helpers'
 import request from 'supertest'
 import { Application } from 'express'
 import { signJwt, USER_ENDPOINT } from '../../utils'

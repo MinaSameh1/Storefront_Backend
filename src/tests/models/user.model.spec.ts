@@ -1,6 +1,5 @@
 import { userModel } from '../../model'
-import { beforeHelper } from '../helpers'
-import { generateUser } from '../helpers/generateUser'
+import { beforeHelper, generateUser } from '../helpers'
 
 describe('User model', () => {
   let model: userModel

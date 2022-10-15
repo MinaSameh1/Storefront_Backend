@@ -10,8 +10,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module'
+    project: ['./tsconfig.json'] // required for "type-aware linting"
   },
   plugins: ['@typescript-eslint', 'prettier'],
   ignorePatterns: ['.eslintrc.js'],

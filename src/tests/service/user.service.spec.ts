@@ -1,7 +1,6 @@
 import { getUsers, createUser, loginUser } from '../../service'
-import { beforeHelper } from '../helpers'
+import { beforeHelper, generateUser } from '../helpers'
 import { userModel } from '../../model'
-import { generateUser } from '../helpers/generateUser'
 import { StoreUser } from '../../types'
 import { verifyJwt } from '../../utils'
 

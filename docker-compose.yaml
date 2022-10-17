@@ -5,6 +5,6 @@ services:
     image: 'postgres:latest'
     restart: always
     env_file:
-      - .env
+      - .env.production
     ports:
       - 5432:5432

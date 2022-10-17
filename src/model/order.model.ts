@@ -17,36 +17,40 @@ export class orderModel {
     return result.rows[0]
   }
 
-  async showById(id: Required<Pick<Order, 'id'>>) {
+  async showById(
+    id: Required<NonNullable<Order['id']>>
+  ): Promise<QueryResult<Order>['rows'][0]> {
     const result = await query('SELECT * FROM orders WHERE id = $1', [id])
     return result.rows[0]
   }
 
   private async getOrdersByUserAndStatus(
-    id: Required<Pick<StoreUser, 'id'>>,
+    user_id: Required<StoreUser['id']>,
     status: Required<Order['order_status']>
-  ): Promise<QueryResult<StoreUser>['rows'][0]> {
+  ): Promise<QueryResult<Order>['rows']> {
     const result = await query(
-      'SELECT * FROM orders WHERE user_id = $1 AND order_status=$2',
-      [id, status]
+      'SELECT * FROM orders WHERE user_id = $1 AND order_status = $2',
+      [user_id, status]
     )
-    return result.rows[0]
+    return result.rows
   }
 
-  getActiveOrderByUser(
-    id: Required<Pick<StoreUser, 'id'>>
-  ): Promise<QueryResult<StoreUser>['rows'][0]> {
-    return this.getOrdersByUserAndStatus(id, false)
+  async getActiveOrderByUser(
+    id: Required<NonNullable<StoreUser['id']>>
+  ): Promise<QueryResult<Order>['rows'][0]> {
+    const result = await this.getOrdersByUserAndStatus(id, false)
+    return result[0]
   }
 
-  getInactiveOrderByUser(
-    id: Required<Pick<StoreUser, 'id'>>
-  ): Promise<QueryResult<StoreUser>['rows'][0]> {
+  getCompletedOrdersByUser(
+    id: Required<StoreUser['id']>
+  ): Promise<QueryResult<Order>['rows']> {
     return this.getOrdersByUserAndStatus(id, true)
   }
 
-  index(limit = 20, offset = 0): Promise<QueryResult<Order>> {
-    return query('SELECT * FROM products orders $1 OFFSET $2', [limit, offset])
+  async index(): Promise<QueryResult<Order>['rows']> {
+    const result = await query('SELECT * FROM orders', [])
+    return result.rows
   }
 
   //// Method overloads
@@ -54,7 +58,7 @@ export class orderModel {
    * @description Updates order's order_Status (MUST supply user_id)
    * @param {string} user_id - Id of the user in the order we want to update
    */
-  async update({
+  private async update({
     // eslint-disable-next-line no-unused-vars
     user_id
   }: UpdateOrderRequireUserid): Promise<QueryResult<Order>['rows'][0]>
@@ -63,12 +67,12 @@ export class orderModel {
    * @description Updates order's order_Status (MUST supply id)
    * @param {string} id - Id of the order we want to update
    */
-  async update({
+  private async update({
     // eslint-disable-next-line no-unused-vars
     id
   }: UpdateOrderRequireId): Promise<QueryResult<Order>['rows'][0]>
 
-  async update({
+  private async update({
     id,
     user_id
   }: UpdateOrderStatusParams): Promise<QueryResult<Order>['rows'][0]> {
@@ -77,7 +81,7 @@ export class orderModel {
       where = 'user_id'
     }
     const result = await query(
-      `UPDATE orders SET order_status = TRUE WHERE ${where} = $2 AND order_status = FALSE RETURNING *`,
+      `UPDATE orders SET order_status = TRUE WHERE ${where} = $1 AND order_status = FALSE RETURNING *`,
       [id ?? user_id]
     )
 
@@ -85,9 +89,9 @@ export class orderModel {
   }
 
   updateOrderStatusUsingUserId(
-    userId: UpdateOrderRequireUserid
+    user_id: UpdateOrderRequireUserid
   ): Promise<QueryResult<Order>['rows'][0]> {
-    return this.update(userId)
+    return this.update(user_id)
   }
 
   updateOrderStatusUsingOrderId(

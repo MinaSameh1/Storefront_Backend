@@ -15,7 +15,7 @@ RETURNS TABLE(
 $$
 BEGIN
     RETURN QUERY
-    INSERT INTO orders(user_id, amount_of_unique_items, order_status)
+    INSERT INTO orders(user_id, order_status)
     VALUES(_user_id,  _order_status)
     RETURNING *;
 END

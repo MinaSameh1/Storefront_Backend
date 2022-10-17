@@ -15,11 +15,8 @@ export type UpdateOrderRequireUserid = Required<Pick<Order, 'user_id'>> & {
 }
 
 /*
- * @description The goal of this is to prevent us from updating the order
- * in both the status and amount at THE SAME *TIME*, I believe that you should
- * only update the order status OR amount not both at the same time!
+ * @description Only allow us to update using userId or OrderId, but not both at the same time.
  */
-
 export type UpdateOrderStatusParams =
   | UpdateOrderRequireId
   | UpdateOrderRequireUserid

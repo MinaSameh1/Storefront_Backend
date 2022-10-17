@@ -1,7 +1,7 @@
 -- Using gen_random_uuid as per the docs of 
 CREATE TABLE IF NOT EXISTS products(
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
     price MONEY NOT NULL,
     category TEXT
 );
@@ -22,7 +22,7 @@ LANGUAGE 'plpgsql';
 
 --- Get categorized items.
 CREATE OR REPLACE FUNCTION get_product_by_category(_category TEXT)
-RETURNS SETOF products AS
+RETURNS SETOF PRODUCTS AS
 $$
 BEGIN
     RETURN QUERY

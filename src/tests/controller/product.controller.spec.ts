@@ -115,16 +115,6 @@ describe('Product endpoint', () => {
       expect(res.body.price).toBeDefined()
     })
 
-    it('should not create on using the same product name', async () => {
-      const res = await request(app)
-        .post('/api/product')
-        .send(testProduct)
-        .set('authorization', 'Bearer ' + token)
-
-      expect(res.statusCode).toEqual(400)
-      expect(res.body.message).toBeDefined()
-    })
-
     it('should create the product without category', async () => {
       const product = generateProduct()
       product.category = undefined

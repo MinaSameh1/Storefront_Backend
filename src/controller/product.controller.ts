@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import { DatabaseError } from 'pg'
 import { uuidValidate } from '../utils'
 import { getProducts, createProduct } from '../service'
 import { Product } from '../types'
@@ -77,12 +76,6 @@ export async function createProductHandler(
     if (result) return res.status(200).json(result)
     return res.status(500).json({ message: "Product wasn't created!" })
   } catch (err: unknown) {
-    req.log.error(err)
-    if (err instanceof DatabaseError) {
-      // Error by database
-      if (err.code === '23505')
-        return res.status(400).json({ message: 'Product name already taken!' })
-    }
     next(err)
   }
 }

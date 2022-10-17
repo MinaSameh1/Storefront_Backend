@@ -1,19 +1,17 @@
 import {
   Order,
   StoreUser,
-  UpdateOrderParams,
-  UpdateOrderStatusPraram,
-  UpdateOrderAmountParam
+  UpdateOrderRequireId,
+  UpdateOrderRequireUserid,
+  UpdateOrderStatusParams
 } from '../types'
 import { query } from '../utils'
 import { QueryResult } from 'pg'
 
 export class orderModel {
-  // TODO: Maybe move the return type to types file, used it a lot.
   async create(order: Order): Promise<QueryResult<Order>['rows'][0]> {
-    const result = await query('SELECT * FROM insert_order($1, $2, $3)', [
+    const result = await query('SELECT * FROM insert_order($1, $2)', [
       order.user_id,
-      order.amount_of_unique_items,
       order.order_status
     ])
     return result.rows[0]
@@ -53,54 +51,48 @@ export class orderModel {
 
   //// Method overloads
   /**
-   * @description Represents a book
-   * @constructor
+   * @description Updates order's order_Status (MUST supply user_id)
    * @param {string} user_id - Id of the user in the order we want to update
-   * @param {string} order_status - status of the order
    */
   async update({
     // eslint-disable-next-line no-unused-vars
-    user_id,
-    // eslint-disable-next-line no-unused-vars
-    order_status
-  }: UpdateOrderStatusPraram): Promise<QueryResult<Order>['rows'][0]>
+    user_id
+  }: UpdateOrderRequireUserid): Promise<QueryResult<Order>['rows'][0]>
+
+  /**
+   * @description Updates order's order_Status (MUST supply id)
+   * @param {string} id - Id of the order we want to update
+   */
   async update({
     // eslint-disable-next-line no-unused-vars
-    user_id,
-    // eslint-disable-next-line no-unused-vars
-    amount_of_unique_items
-  }: UpdateOrderAmountParam): Promise<QueryResult<Order>['rows'][0]>
+    id
+  }: UpdateOrderRequireId): Promise<QueryResult<Order>['rows'][0]>
 
   async update({
-    // order_id, NOTE: Do we need the OrderId? we will only have one active order per user anyways
-    user_id,
-    amount_of_unique_items,
-    order_status
-  }: UpdateOrderParams): Promise<QueryResult<Order>['rows'][0]> {
-    if (amount_of_unique_items) {
-      // Branch A
-      const result = await query(
-        'UPDATE orders SET amount_of_unique_items = $1 WHERE user_id = $2 AND order_status = TRUE RETURNING *',
-        [amount_of_unique_items, user_id]
-      )
-
-      return result.rows[0]
+    id,
+    user_id
+  }: UpdateOrderStatusParams): Promise<QueryResult<Order>['rows'][0]> {
+    let where = 'id'
+    if (user_id) {
+      where = 'user_id'
     }
-    if (order_status) {
-      // Branch B
-      const result = await query(
-        'UPDATE orders SET order_status = $1 WHERE user_id = $2 AND order_status = TRUE RETURNING *',
-        [order_status, user_id]
-      )
+    const result = await query(
+      `UPDATE orders SET order_status = TRUE WHERE ${where} = $2 AND order_status = FALSE RETURNING *`,
+      [id ?? user_id]
+    )
 
-      return result.rows[0]
-    }
-    throw Error('Wrong params passed to updateOrder!')
+    return result.rows[0]
   }
 
-  updateOrderStatus(
-    orderInfoToUpdate: UpdateOrderStatusPraram
+  updateOrderStatusUsingUserId(
+    userId: UpdateOrderRequireUserid
   ): Promise<QueryResult<Order>['rows'][0]> {
-    return this.update(orderInfoToUpdate)
+    return this.update(userId)
+  }
+
+  updateOrderStatusUsingOrderId(
+    id: UpdateOrderRequireId
+  ): Promise<QueryResult<Order>['rows'][0]> {
+    return this.update(id)
   }
 }

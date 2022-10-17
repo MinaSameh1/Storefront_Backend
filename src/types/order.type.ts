@@ -3,26 +3,23 @@ import { row } from './'
 export interface Order extends row {
   id?: string
   user_id: string
-  amount_of_unique_items: number
   order_status: boolean
 }
 
-// Only update the amount or status but not both.
-type UpdateOrderRequireParams<
-  T extends keyof Order,
-  K extends keyof Order
-> = Required<Pick<Order, 'user_id' | T>> & {
-  // eslint-disable-next-line no-unused-vars
-  [P in keyof Pick<Order, K>]?: never
+export type UpdateOrderRequireId = Required<Pick<Order, 'id'>> & {
+  user_id?: never
 }
 
-export type UpdateOrderAmountParam = UpdateOrderRequireParams<
-  'amount_of_unique_items', // Required
-  'order_status' // Never
->
-export type UpdateOrderStatusPraram = UpdateOrderRequireParams<
-  'order_status',
-  'amount_of_unique_items'
->
+export type UpdateOrderRequireUserid = Required<Pick<Order, 'user_id'>> & {
+  id?: never
+}
 
-export type UpdateOrderParams = UpdateOrderAmountParam | UpdateOrderStatusPraram
+/*
+ * @description The goal of this is to prevent us from updating the order
+ * in both the status and amount at THE SAME *TIME*, I believe that you should
+ * only update the order status OR amount not both at the same time!
+ */
+
+export type UpdateOrderStatusParams =
+  | UpdateOrderRequireId
+  | UpdateOrderRequireUserid

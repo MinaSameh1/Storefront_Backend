@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import { uuidValidate } from '../utils'
-import { getProducts, createProduct } from '../service'
+import { createProduct, getProducts } from '../service'
 import { Product } from '../types'
-
-//  TODO: Top 5 most popular products
+import { uuidValidate } from '../utils'
 
 /**
  * @description Get products and shows them

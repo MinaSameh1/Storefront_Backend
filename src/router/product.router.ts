@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { requireUser, validateBody } from '../middleware'
 import { createProductHandler, showProductsHandler } from '../controller'
-import { PRODUCT_ENDPOINT } from '../utils'
+import { requireUser, validateBody } from '../middleware'
 import { productTemplate } from '../schema'
+import { PRODUCT_ENDPOINT } from '../utils'
 
 export const productRouter = Router()
 

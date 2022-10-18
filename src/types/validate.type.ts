@@ -3,6 +3,7 @@ type options = {
   optional?: boolean
   max?: number
   min?: number
+  default?: unknown
 }
 
 export interface validateType {

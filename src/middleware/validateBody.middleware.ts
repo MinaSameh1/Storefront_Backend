@@ -22,8 +22,11 @@ export const validateBody =
         // If the value doesn't exist on body
         if (element === undefined) {
           // Check if its optional or not
-          if (!template[key].optional)
-            throw new validationError(`Missing ${key}!`)
+          if (!template[key].optional) {
+            if (template[key].default) {
+              req.body[key] = template[key].default
+            } else throw new validationError(`Missing ${key}!`)
+          }
           // Check if the value is the same type as the template.
         } else if (typeof element !== template[key].type)
           throw new validationError(

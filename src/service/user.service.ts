@@ -96,11 +96,12 @@ export async function loginUser({
   pass
 }: Pick<StoreUser, 'username' | 'pass'>): Promise<string | undefined> {
   // get user and compare it.
-  logger.info('Recieved name and pass comparing...')
+  logger.debug('Recieved name and pass comparing...')
   const result = await model.showByUsername(username)
-  if (compareSync(pass + PEPPER, result.rows[0].pass ?? '')) {
-    return signJwt(result.rows[0])
-  }
+  if (result.rows[0]?.pass)
+    if (compareSync(pass + PEPPER, result.rows[0].pass)) {
+      delete result.rows[0].pass
+      return signJwt(result.rows[0])
+    }
   return undefined
-  // signJwt
 }

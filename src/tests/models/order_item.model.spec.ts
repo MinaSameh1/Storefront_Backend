@@ -69,27 +69,6 @@ describe('Order Item Model', () => {
     expect(result[0].product_id).toBeDefined()
   })
 
-  it('Should get orderItems by product id', async () => {
-    const anotherProduct = await productModel.create(generateProduct())
-    const anotherOrderItem = await model.create({
-      order_id: order.id,
-      product_id: anotherProduct.id,
-      quantity: 1
-    })
-    expect(anotherOrderItem).toEqual({
-      order_id: order.id,
-      product_id: anotherProduct.id,
-      quantity: 1
-    })
-
-    const result = await model.indexByProductId(
-      typeof product.id === 'string' ? product.id : ''
-    )
-    expect(result.length).toBeGreaterThanOrEqual(2)
-    expect(result[0].order_id).toBeDefined()
-    expect(result[0].product_id).toBeDefined()
-  })
-
   it('Should update the orderItem quantity', async () => {
     const anotherProduct = await productModel.create(generateProduct())
     const orderItem = await model.create({
@@ -107,5 +86,16 @@ describe('Order Item Model', () => {
     expect(result.quantity).toEqual(4)
     expect(result.order_id).toEqual(order.id)
     expect(result.product_id).toEqual(anotherProduct.id)
+  })
+
+  it('Should return the exact order item!', async () => {
+    const result = await model.showByOrderIdAndProductId({
+      order_id: order.id,
+      product_id: product.id
+    })
+
+    expect(result.product_id).toEqual(product.id)
+    expect(result.order_id).toEqual(order.id)
+    expect(result.quantity).toBeGreaterThanOrEqual(1)
   })
 })

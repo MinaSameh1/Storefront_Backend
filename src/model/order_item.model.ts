@@ -1,5 +1,5 @@
 import { QueryResult } from 'pg'
-import { Order, OrderItem, Product } from '../types'
+import { Order, OrderItem } from '../types'
 import { query } from '../utils'
 
 export class orderItemModel {
@@ -12,16 +12,6 @@ export class orderItemModel {
     return result.rows
   }
 
-  async indexByProductId(
-    id: Required<NonNullable<Product['id']>>
-  ): Promise<QueryResult<OrderItem>['rows']> {
-    const result = await query(
-      'SELECT * FROM order_item WHERE product_id = $1',
-      [id]
-    )
-    return result.rows
-  }
-
   async create(
     orderItem: OrderItem
   ): Promise<QueryResult<OrderItem>['rows'][0]> {
@@ -30,6 +20,16 @@ export class orderItemModel {
       orderItem.product_id,
       orderItem.quantity
     ])
+    return result.rows[0]
+  }
+
+  async showByOrderIdAndProductId(
+    orderItem: Omit<OrderItem, 'quantity'>
+  ): Promise<QueryResult<OrderItem>['rows'][0]> {
+    const result = await query(
+      'SELECT * FROM order_item WHERE order_id = $1 AND product_id = $2',
+      [orderItem.order_id, orderItem.product_id]
+    )
     return result.rows[0]
   }
 

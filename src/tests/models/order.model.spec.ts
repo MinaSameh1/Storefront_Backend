@@ -39,11 +39,7 @@ describe('Order Model', () => {
   })
 
   it('Should get completed orders', async () => {
-    let i = 5
-    while (i > 0) {
-      await model.create(generateOrder(userId, true))
-      i--
-    }
+    for (let i = 0; i < 5; i++) await model.create(generateOrder(userId, true))
     const result = await model.getCompletedOrdersByUser(userId)
     expect(result.length).toBeGreaterThanOrEqual(4)
     for (const order of result) {

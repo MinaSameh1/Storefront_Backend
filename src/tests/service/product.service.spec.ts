@@ -8,11 +8,8 @@ describe('Product service', () => {
   beforeAll(async () => {
     beforeHelper()
     const model = new productModel()
-    let i = 5
-    while (i > 0) {
-      i--
+    for (let i = 0; i < 5; i++)
       await model.create(generateProduct('testService'))
-    }
   })
 
   it('Should create product', async () => {

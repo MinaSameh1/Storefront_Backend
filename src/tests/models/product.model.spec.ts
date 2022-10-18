@@ -10,12 +10,8 @@ describe('Product Model', () => {
     // Connect to db
     beforeHelper()
     model = new productModel()
-    let i = 5
     // Create 5 products to test out the iteration.
-    while (i != 0) {
-      i--
-      await model.create(generateProduct('testModel'))
-    }
+    for (let i = 0; i < 5; i++) await model.create(generateProduct('testModel'))
   })
 
   it('Should create product', async () => {

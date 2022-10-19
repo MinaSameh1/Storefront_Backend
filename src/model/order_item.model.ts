@@ -1,5 +1,5 @@
 import { QueryResult } from 'pg'
-import { Order, OrderItem } from '../types'
+import { Item, Order, OrderItem } from '../types'
 import { query } from '../utils'
 
 export class orderItemModel {
@@ -12,6 +12,15 @@ export class orderItemModel {
     return result.rows
   }
 
+  async getItemsAndProducts(
+    id: Required<NonNullable<Order['id']>>
+  ): Promise<QueryResult<Item>['rows']> {
+    const result = await query(
+      'SELECT order_id, product_id, name, quantity, price, price*quantity as total FROM order_item LEFT JOIN products ON order_item.product_id = products.id where order_item.order_id = $1',
+      [id]
+    )
+    return result.rows
+  }
   async create(
     orderItem: OrderItem
   ): Promise<QueryResult<OrderItem>['rows'][0]> {

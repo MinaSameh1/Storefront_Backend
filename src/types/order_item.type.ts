@@ -5,3 +5,9 @@ export interface OrderItem extends row {
   product_id: Product['id']
   quantity: number
 }
+
+export interface Item extends OrderItem {
+  name: string
+  price: string
+  total: string
+}

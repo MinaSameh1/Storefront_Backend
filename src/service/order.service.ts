@@ -73,5 +73,5 @@ export async function updateQuantity(orderItem: OrderItem) {
 }
 
 export function getItemsByOrderId(id: NonNullable<Order['id']>) {
-  return orderItemModel.indexByOrderId(id)
+  return orderItemModel.getItemsAndProducts(id)
 }

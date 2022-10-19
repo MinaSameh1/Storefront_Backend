@@ -7,7 +7,7 @@ import { getLogger } from './utils'
 
 import path from 'path'
 import { deseralizeUser } from './middleware'
-import { productRouter, serverRouter, userRouter } from './router'
+import { orderRouter, productRouter, serverRouter, userRouter } from './router'
 
 /*
  * @description: Configures the express server, from json space to cors.
@@ -70,7 +70,7 @@ function addRoutes(app: express.Application, Routes: Array<express.Router>) {
  */
 export function createExpressApp(): express.Application {
   const app = express()
-  const Routes = [serverRouter, productRouter, userRouter]
+  const Routes = [serverRouter, productRouter, userRouter, orderRouter]
   configureServer(app) // first config
   addMiddleware(app) // then global middleware
   addRoutes(app, Routes) // then routes :D

@@ -4,7 +4,8 @@ import {
   completeUserOrderController,
   createOrderItemController,
   getOrdersController,
-  getUserActiveOrderController
+  getUserActiveOrderController,
+  getUserOrdersController
 } from '../controller'
 import { requireUser, validateBody } from '../middleware'
 import { orderItemTemplate } from '../schema'
@@ -19,11 +20,13 @@ orderRouter.get(
   getUserActiveOrderController
 )
 
+// Gets orders by current user
+orderRouter.get(`${ORDER_ENDPOINT}/user`, requireUser, getUserOrdersController)
 // Gets order by userId
 orderRouter.get(
   `${ORDER_ENDPOINT}/user/:userId`,
   requireUser,
-  getOrdersController
+  getUserOrdersController
 )
 
 // Gets order by id
@@ -39,7 +42,7 @@ orderRouter.post(
 
 //// Completes item
 // by current user
-orderRouter.put(`${ORDER_ENDPOINT}`, requireUser, completeUserOrderController)
+orderRouter.put(ORDER_ENDPOINT, requireUser, completeUserOrderController)
 // By userId
 orderRouter.put(
   `${ORDER_ENDPOINT}/user/:userId`,

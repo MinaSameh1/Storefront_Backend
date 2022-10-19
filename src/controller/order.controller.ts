@@ -89,7 +89,11 @@ export async function getUserActiveOrderController(
 ) {
   try {
     const result = await orderService.getActiveOrderForUser(res.locals.user.id)
-    if (result) return res.status(200).json(result)
+    if (result)
+      return res.status(200).json({
+        order: result,
+        items: await orderService.getItemsByOrderId(String(result.id))
+      })
     return res
       .status(404)
       .json({ message: 'User doesnt have any active order' })
@@ -109,37 +113,49 @@ export async function getOrdersController(
       const orderItems = await orderService.getItemsByOrderId(String(order.id))
       return res.status(200).json({ order: order, items: orderItems })
     }
-    if (req.params.userId) {
-      let active: OrderAndItems | undefined = undefined
-      // First get user orders.
-      const userOrders = await orderService.getAllOrdersForUser(
-        req.params.userId
-      )
-      const ordersCompleted: Array<OrderAndItems> = []
-      // Then mold the data into a good shape for use.
-      for (const order of userOrders.completedOrders) {
-        const items = await orderService.getItemsByOrderId(String(order.id))
-        const orderAndItems: OrderAndItems = {
-          ...order,
-          items
-        }
-        ordersCompleted.push(orderAndItems)
-      }
-      // if the user has active order then add it to the response.
-      if (userOrders.active) {
-        const activeOrderId = String(userOrders.active.id)
-        active = {
-          ...userOrders.active,
-          items: await orderService.getItemsByOrderId(activeOrderId)
-        }
-      }
-      return res.status(200).json({
-        active: active ?? {},
-        completed: ordersCompleted
-      })
-    }
     return res.status(200).json(await orderService.getAllOrders())
   } catch (err) {
     return next(err)
+  }
+}
+
+export async function getUserOrdersController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    let userId: string = res.locals.user.id
+    if (req.params.userId) {
+      userId = String(req.params.userId)
+    }
+
+    let active: OrderAndItems | undefined = undefined
+    // First get user orders.
+    const userOrders = await orderService.getAllOrdersForUser(userId)
+    const ordersCompleted: Array<OrderAndItems> = []
+    // Then mold the data into a good shape for use.
+    for (const order of userOrders.completedOrders) {
+      const items = await orderService.getItemsByOrderId(String(order.id))
+      const orderAndItems: OrderAndItems = {
+        ...order,
+        items
+      }
+      ordersCompleted.push(orderAndItems)
+    }
+    // if the user has active order then add it to the response.
+    if (userOrders.active) {
+      const activeOrderId = String(userOrders.active.id)
+      active = {
+        ...userOrders.active,
+        items: await orderService.getItemsByOrderId(activeOrderId)
+      }
+    }
+    return res.status(200).json({
+      active: active ?? {},
+      completed: ordersCompleted
+    })
+  } catch (err) {
+    next(err)
   }
 }

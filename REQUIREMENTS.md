@@ -24,8 +24,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Orders
 
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required] `GET /api/order/active`
+- [OPTIONAL] Completed Orders by user (args: user id)[token required] `GET /api/order/user` (for users add :userId to the route.)
 
 ## Data Shapes
 
@@ -34,11 +34,12 @@ These are the notes from a meeting with the frontend developer that describe wha
 - id
 - name
 - price
-- [OPTIONAL] category
+- category
 
 #### User
 
 - id
+- username (added)
 - firstName
 - lastName
 - password

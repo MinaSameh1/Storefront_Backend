@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   createUserHandler,
+  getCurrentUserHandler,
   getUsersHandler,
   loginUserHandler
 } from '../controller'
@@ -12,6 +13,7 @@ import { requireUser } from '../middleware'
 export const userRouter = Router()
 
 userRouter.get(USER_ENDPOINT, requireUser, getUsersHandler)
+userRouter.get(`${USER_ENDPOINT}/me`, requireUser, getCurrentUserHandler)
 userRouter.get(`${USER_ENDPOINT}/:id`, requireUser, getUsersHandler)
 
 userRouter.post(

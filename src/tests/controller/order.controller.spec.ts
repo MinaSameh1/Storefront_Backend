@@ -48,7 +48,8 @@ describe('Order Controller', () => {
         .get(`${ORDER_ENDPOINT}/active`)
         .set('authorization', 'Bearer ' + token)
       expect(result.statusCode).toEqual(200)
-      expect(result.body).toEqual(order)
+      expect(result.body.order).toEqual(order)
+      expect(result.body.items).toBeDefined()
     })
 
     it('should return order using orderid', async () => {
@@ -66,6 +67,15 @@ describe('Order Controller', () => {
     it('Should return all user orders with items', async () => {
       const result = await request(app)
         .get(`${ORDER_ENDPOINT}/user/${user.id}`)
+        .set('authorization', 'Bearer ' + token)
+      expect(result.statusCode).toEqual(200)
+      expect(result.body.active).toBeDefined()
+      expect(result.body.completed).toBeDefined()
+    })
+
+    it('Should return all current user orders with items', async () => {
+      const result = await request(app)
+        .get(`${ORDER_ENDPOINT}/user`)
         .set('authorization', 'Bearer ' + token)
       expect(result.statusCode).toEqual(200)
       expect(result.body.active).toBeDefined()

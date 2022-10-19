@@ -101,6 +101,18 @@ describe('User Route', () => {
       expect(result.body.currentPage).toEqual(1)
     })
 
+    it(' Protected Should get current user', async () => {
+      const result = await request(app)
+        .get(`${USER_ENDPOINT}/me`)
+        .set('authorization', 'Bearer ' + token)
+
+      expect(result.statusCode).toEqual(200)
+      expect(result.body.id).toEqual(userGet.id)
+      expect(result.body.username).toEqual(userGet.username)
+      expect(result.body.firstname).toEqual(userGet.firstname)
+      expect(result.body.lastname).toEqual(userGet.lastname)
+    })
+
     it(' Protected Should get one user by id', async () => {
       const result = await request(app)
         .get(`${USER_ENDPOINT}/${userGet.id}`)

@@ -79,6 +79,17 @@ export async function getUsersHandler(
   }
 }
 
+export async function getCurrentUserHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    return res.status(200).json(res.locals.user)
+  } catch (err) {
+    next(err)
+  }
+}
 export async function loginUserHandler(
   req: Request<unknown, unknown, Pick<StoreUser, 'username' | 'pass'>>,
   res: Response,

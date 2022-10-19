@@ -58,12 +58,24 @@ yarn run test
 
 ## Endpoints
 
-| Endpoint          | method | brief description                                                                                   |
-| ----------------- | ------ | --------------------------------------------------------------------------------------------------- |
-| /api/ping         | get    | Checks if api is working returns 200                                                                |
-| /api/products     | post   | creates product requires name and price                                                             |
-| /api/products     | get    | gets products, supports pagination using limit and page and filtering using category (all queries). |
-| /api/products/:id | get    | get a product using id                                                                              |
+| Endpoint                | method | brief description                                                                                   |
+| ----------------------- | ------ | --------------------------------------------------------------------------------------------------- |
+| /api/ping               | get    | Checks if api is working returns 200                                                                |
+| /api/products           | post   | (Protected) creates product requires name and price                                                 |
+| /api/products           | get    | gets products, supports pagination using limit and page and filtering using category (all queries). |
+| /api/products/:id       | get    | get a product using id                                                                              |
+| /api/user               | post   | Create user                                                                                         |
+| /api/user/login         | post   | login using username and pass                                                                       |
+| /api/user               | get    | (Protected) gets all users.                                                                         |
+| /api/user/id            | get    | (Protected) gets user by id.                                                                        |
+| /api/user/me            | get    | (Protected) gets current user.                                                                      |
+| /api/order/:id          | get    | (Protected) gets order by id.                                                                       |
+| /api/order/active       | get    | gets current user active order and its items                                                        |
+| /api/order/user/:userId | get    | gets order by userId                                                                                |
+| /api/order              | post   | adds item to current user active order or creates the order then adds it.                           |
+| /api/order              | put    | Completes order using current user token.                                                           |
+| /api/order/user/:userId | put    | completes userId order                                                                              |
+| /api/order/:id          | put    | completes order by id                                                                               |
 
 ## Examples
 
@@ -71,6 +83,52 @@ yarn run test
 
 ```get /api/product
 GET /api/product?limit=1&page=2&category=test
+```
+
+- Example for creating user
+
+```
+POST /api/user
+Body: {
+  "username": "test",
+  "firstname": "test",
+  "lastname": "test",
+  "pass": "123456"
+}
+```
+
+- Then to login if needed
+
+```
+POST /api/user/login
+```
+
+- To add item to an order
+
+```
+POST /api/order
+Body: {
+  "product_id": "2f19ab86-1fad-4043-9606-2e0f347e0ad9",
+  "quantity": 2
+}
+```
+
+- To get current active order
+
+```
+GET /api/order/active
+```
+
+- To update status to completed
+
+```
+PUT /api/order
+```
+
+- To get all orders by current user
+
+```
+GET /api/order/user
 ```
 
 ## References

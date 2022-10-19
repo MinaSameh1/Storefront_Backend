@@ -16,9 +16,7 @@
     "port": {
       "ENV": "PGPORT"
     },
-    "database": {
-      "ENV": "POSTGRES_DB"
-    }
+    "database": "prodDb"
   },
   "development": {
     "driver": "pg",
@@ -34,9 +32,7 @@
     "port": {
       "ENV": "PGPORT"
     },
-    "database": {
-      "ENV": "POSTGRES_DB"
-    }
+    "database": "devDb"
   },
   "test": {
     "driver": "pg",
@@ -52,8 +48,6 @@
     "port": {
       "ENV": "PGPORT"
     },
-    "database": {
-      "ENV": "POSTGRES_DB"
-    }
+    "database": "testDb"
   }
 }

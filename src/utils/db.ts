@@ -16,7 +16,15 @@ import { logger } from './.'
  */
 
 let pool: Pool
+let database: string
 
+if (process.env['NODE_ENV'] === 'production') {
+  database = String(process.env.POSTGRES_DB_PROD)
+} else if (process.env['NODE_ENV'] === 'test') {
+  database = String(process.env.POSTGRES_DB_TEST)
+} else {
+  database = String(process.env.POSTGRES_DB)
+}
 /*
  * @description responsible for connecting to the database.
  */
@@ -26,7 +34,7 @@ export function connect() {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     host: process.env.PGHOST,
-    database: process.env.POSTGRES_DB
+    database: database
   })
 }
 

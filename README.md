@@ -8,7 +8,7 @@ It is a Nodejs express API and postgres as database.
 
 ## Running/testing the API
 
-To run the api, copy the `.env.example` file to `.env.development` or `.env.production` for dev and prod respectfully, and set the variables as needed.
+To run the api, copy the `.env.example` file to `.env`
 
 ```.env
 # .env.example
@@ -23,12 +23,10 @@ PGPORT=5432
 PGHOST=localhost
 POSTGRES_USER=user
 POSTGRES_PASSWORD=pass
-POSTGRES_DB=db # Change this in different .env files for different dbs!
+POSTGRES_DB=devDb
+POSTGRES_DB_TEST=testDb
+POSTGRES_DB_PROD=prodDb
 ```
-
-**Important notice**: Tests won't run without a .env.test file!!!!!!!  
-Db-migrate loads custom dotenv paths as well ([Beta feature](https://github.com/db-migrate/node-db-migrate/issues/517))  
-So create the .env files (3, one for each node_env) depending on your need.
 
 #### Production
 

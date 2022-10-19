@@ -85,7 +85,7 @@ describe('User Route', () => {
       userGet.id = String(result.id)
       token = signJwt(userGet)
 
-      for (let i = 0; i < 5; i++) await createUser(generateUser())
+      for (let i = 0; i < 3; i++) await createUser(generateUser())
     })
 
     it(' Protected Should get users', async () => {

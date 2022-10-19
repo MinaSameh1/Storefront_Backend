@@ -58,6 +58,8 @@ yarn run test
 
 ## Endpoints
 
+_Note: When i say current user I mean the user sending the token._
+
 | Endpoint                | method | brief description                                                                                   |
 | ----------------------- | ------ | --------------------------------------------------------------------------------------------------- |
 | /api/ping               | get    | Checks if api is working returns 200                                                                |
@@ -71,6 +73,7 @@ yarn run test
 | /api/user/me            | get    | (Protected) gets current user.                                                                      |
 | /api/order/:id          | get    | (Protected) gets order by id.                                                                       |
 | /api/order/active       | get    | gets current user active order and its items                                                        |
+| /api/order/user         | get    | gets all orders by current user                                                                     |
 | /api/order/user/:userId | get    | gets order by userId                                                                                |
 | /api/order              | post   | adds item to current user active order or creates the order then adds it.                           |
 | /api/order              | put    | Completes order using current user token.                                                           |

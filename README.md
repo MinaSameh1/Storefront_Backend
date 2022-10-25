@@ -31,7 +31,6 @@ POSTGRES_DB_PROD=prodDb
 #### Production
 
 ```
-cp .env.example .env.production # edit it and set env vars
 yarn install
 yarn run migrate:prod:up
 yarn build
@@ -41,7 +40,6 @@ yarn start
 #### Development
 
 ```
-cp .env.example .env.development # edit it and set env vars
 yarn install
 yarn run migrate:dev:up
 yarn dev
@@ -50,7 +48,6 @@ yarn dev
 #### Tests
 
 ```
-cp .env.example .env.test # edit it and set env vars
 yarn run test
 ```
 

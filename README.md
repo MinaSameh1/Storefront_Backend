@@ -134,4 +134,5 @@ GET /api/order/user
 [pg official docs](https://node-postgres.com/features/connecting)  
 [gen_random_uuid and uuid_generate_v4](https://dba.stackexchange.com/questions/205902/postgresql-two-different-ways-to-generate-a-uuid-gen-random-uuid-vs-uuid-genera)  
 [Typescript style guide](https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#null-and-undefined)  
-[Udaicty style guide](https://udacity.github.io/frontend-nanodegree-styleguide/javascript.html)
+[Udaicty style guide](https://udacity.github.io/frontend-nanodegree-styleguide/javascript.html)   
+[Nodejs pagination](https://www.bezkoder.com/node-js-pagination-postgresql/)

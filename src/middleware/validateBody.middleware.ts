@@ -16,28 +16,27 @@ export const validateBody =
         let max: number | undefined = undefined
         let min: number | undefined = undefined
         const element = req.body[key]
+        const templateElement = template[key]
 
-        if (template[key].max) max = template[key].max
-        if (template[key].min) min = template[key].min
         // If the value doesn't exist on body
         if (element === undefined) {
           // Check if its optional or not
-          if (!template[key].optional) {
-            if (template[key].default) {
-              req.body[key] = template[key].default
+          if (!templateElement.optional) {
+            if (templateElement.default) {
+              req.body[key] = templateElement.default
             } else throw new validationError(`Missing ${key}!`)
           }
           // Check if the value is the same type as the template.
-        } else if (typeof element !== template[key].type)
+        } else if (typeof element !== templateElement.type)
           throw new validationError(
             `Wrong type of ${key}, should be ${
-              template[key].type
+              templateElement.type
             } recieved ${typeof element}!`
           )
         // If there is min and max then check the value lays between them.
         else if (
-          (max && moreThan(element, max)) ||
-          (min && lessThan(element, min))
+          (templateElement.max && moreThan(element, max)) ||
+          (templateElement.min && lessThan(element, min))
         ) {
           throw new validationError(
             `${key} length must be between ${min} and ${max} recieved ${

@@ -13,8 +13,6 @@ export const validateBody =
     try {
       // loop through the template keys
       for (const key of Object.keys(template)) {
-        let max: number | undefined = undefined
-        let min: number | undefined = undefined
         const element = req.body[key]
         const templateElement = template[key]
 
